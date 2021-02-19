@@ -1,0 +1,114 @@
+//MCU Specific Header File
+#include<stdint.h>
+// Defining Memory Base Addresses
+
+#define SRAM1_BASEADDR 0x20000000U
+#define SRAM2_BASEADDR 0x2001C000U
+#define FLASH_BASEADDR 0x08000000U
+#define ROM_BASEADDR 0x1FFF0000U
+
+// Defining peripheral Base Addresses
+
+#define APB1_BASEADDR 0x40000000U
+#define APB2_BASEADDR 0x40010000U
+#define AHB1_BASEADDR 0x40020000U
+
+// Defining Peripherals' Base Address which is hanging on to AHB1 Bus
+
+//#define GPIOA_BASEADDR 0x40020000U
+//#define GPIOB_BASEADDR 0x40020400U
+
+#define GPIOA_BASEADDR (AHB1_BASEADDR+ 0x0U)
+#define GPIOB_BASEADDR (AHB1_BASEADDR+0x0400U)
+#define GPIOC_BASEADDR (AHB1_BASEADDR+0x0800U)
+#define GPIOD_BASEADDR (AHB1_BASEADDR+0x0C00U)
+#define GPIOE_BASEADDR (AHB1_BASEADDR+0x1000U)
+#define RCC_BASEADDR (AHB1_BASEADDR+0x3800UL) //0x40023800
+/*#define GPIOF_BASEADDR (AHB1_BASEADDR+0x1400U)
+#define GPIOG_BASEADDR (AHB1_BASEADDR+0x1800U)
+#define GPIOH_BASEADDR (AHB1_BASEADDR+0x1C00U)
+#define GPIOI_BASEADDR (AHB1_BASEADDR+0x2000U)
+#define GPIOJ_BASEADDR (AHB1_BASEADDR+0x2400U)
+#define GPIOK_BASEADDR (AHB1_BASEADDR+0x2800U)
+#define CRC_BASEADDR (AHB1_BASEADDR+0x3000U)
+#define RCC_BASEADDR (AHB1_BASEADDR+0x3800U)
+#define Flash_interface_BASEADDR (AHB1_BASEADDR+0x3C00U)
+#define BKPSRAM_BASEADDR (AHB1_BASEADDR+0x4000U)
+#define DMA1_BASEADDR (AHB1_BASEADDR+0x6000U)
+#define DMA2_BASEADDR (AHB1_BASEADDR+0x6400U)
+#define ETHERNET_BASEADDR (AHB1_BASEADDR+0x8000U)
+#define DMA2D_BASEADDR (AHB1_BASEADDR+0xB000U)
+#define USB_OTG_HS_BASEADDR (AHB1_BASEADDR+0x0400U)*/
+
+// Defining Peripherals' Base Address which is hanging on to APB1 Bus
+#define TIM2_BASEADDR (APB1_BASEADDR+0x0000U)
+#define TIM1_BASEADDR (APB2_BASEADDR+0x0000U)
+#define _vo volatile
+typedef struct
+{
+	_vo uint32_t MODER;
+	_vo uint32_t OTYPER;
+	_vo uint32_t OSPEEDR;
+	_vo uint32_t PUPDR;
+	_vo uint32_t IDR;
+	_vo uint32_t ODR;
+	_vo uint32_t BSRR;
+	_vo uint32_t LCKR;
+	_vo uint32_t AFR[2];
+}Gpio_RegDef_t; //GPIOx - base address of x typecasted to the structure
+
+typedef struct
+{
+	_vo uint32_t CR;
+	_vo uint32_t PLLCFGR;
+	_vo uint32_t CFGR;
+	_vo uint32_t CIR;
+	_vo uint32_t AHB1RSTR;
+	_vo uint32_t AHB2RSTR;
+	_vo uint32_t AHB3RSTR;
+	uint32_t Reserved;
+	_vo uint32_t APB1RSTR;
+	_vo uint32_t APB2RSTR;
+	uint32_t Reserved;
+	uint32_t Reserved;
+	_vo uint32_t AHB1ENR;
+	_vo uint32_t AHB2ENR;
+	_vo uint32_t AHB3ENR;
+	uint32_t Reserved;
+	_vo uint32_t APB1ENR;
+	_vo uint32_t APB2ENR;
+	uint32_t Reserved;
+	uint32_t Reserved;
+	_vo uint32_t AHB1LPENR;
+	_vo uint32_t AHB2LPENR;
+	_vo uint32_t AHB3LPENR;
+	uint32_t Reserved;
+	_vo uint32_t APB1LPENR;
+	_vo uint32_t APB2LPENR;
+	uint32_t Reserved;
+	uint32_t Reserved;
+	_vo uint32_t BDCR;
+	_vo uint32_t CSR;
+	uint32_t Reserved;
+	uint32_t Reserved;
+	_vo uint32_t SSCGR;
+	_vo uint32_t PLLI2SCFGR;
+}Rcc_RegDef_t;
+#define RCC ((Rcc_RegDef t*)RCC_BASEADDR)
+//Peripheral Clock Enable
+#define GPIOA_PCLK_EN() (RCC->AHB1ENR|=(1<<0))
+#define GPIOB_PCLK_EN() (RCC->AHB1ENR|=(1<<1))
+#define GPIOC_PCLK_EN() (RCC->AHB1ENR|=(1<<2))
+#define GPIOD_PCLK_EN() (RCC->AHB1ENR|=(1<<3))
+#define GPIOE_PCLK_EN() (RCC->AHB1ENR|=(1<<4))
+//Peripheral clock disable
+#define GPIOA_PCLK_DIS() ()
+
+#define GPIOA ((Gpio_RegDef_t*)GPIOA_BASEADDR)
+#define GPIOB ((Gpio_RegDef_t*)GPIOB_BASEADDR)
+#define GPIOC ((Gpio_RegDef_t*)GPIOC_BASEADDR)
+#define GPIOD ((Gpio_RegDef_t*)GPIOD_BASEADDR)
+#define GPIOE ((Gpio_RegDef_t*)GPIOE_BASEADDR)
+
+#include "gpio_driver.h"
+#include "gpio_driver.c"
